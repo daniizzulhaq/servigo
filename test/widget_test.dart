@@ -4,16 +4,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:servigo/app.dart';
 import 'package:servigo/core/constants/app_constants.dart';
 import 'package:servigo/core/router/app_router.dart';
+import 'package:servigo/core/router/app_routes.dart';
 import 'package:servigo/shared/widgets/app_logo.dart';
 
 /// Menjalankan app dengan ProviderScope baru untuk setiap test,
 /// sehingga state (router, tema) tidak bocor antar test.
+///
+/// Default mulai dari Welcome (bukan Splash). Test Splash ada di
+/// test/features/splash/splash_screen_test.dart.
 Future<void> pumpApp(WidgetTester tester, {String? initialLocation}) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
-        if (initialLocation != null)
-          initialLocationProvider.overrideWithValue(initialLocation),
+        initialLocationProvider.overrideWithValue(
+          initialLocation ?? AppRoutes.welcomePath,
+        ),
       ],
       child: const ServiGoApp(),
     ),

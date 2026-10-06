@@ -6,13 +6,14 @@ import 'package:servigo/features/api_check/presentation/api_check_screen.dart';
 import 'package:servigo/features/home/presentation/theme_preview_screen.dart';
 import 'package:servigo/features/home/presentation/welcome_screen.dart';
 import 'package:servigo/features/services/presentation/service_detail_placeholder_screen.dart';
+import 'package:servigo/features/splash/presentation/splash_screen.dart';
 import 'package:servigo/shared/widgets/not_found_screen.dart';
 
-/// Lokasi awal aplikasi. Defaultnya halaman Welcome.
+/// Lokasi awal aplikasi: Splash.
 /// Dibuat provider agar test bisa menggantinya (override)
-/// untuk mensimulasikan deep link.
+/// untuk langsung membuka halaman tertentu atau mensimulasikan deep link.
 final initialLocationProvider = Provider<String>(
-  (ref) => AppRoutes.welcomePath,
+  (ref) => AppRoutes.splashPath,
 );
 
 /// Router aplikasi, disediakan lewat Riverpod.
@@ -23,6 +24,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     errorBuilder: (context, state) =>
         NotFoundScreen(location: state.uri.toString()),
     routes: [
+      GoRoute(
+        path: AppRoutes.splashPath,
+        name: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: AppRoutes.welcomePath,
         name: AppRoutes.welcome,
