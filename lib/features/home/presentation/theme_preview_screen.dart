@@ -1,22 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:servigo/core/theme/app_colors.dart';
 import 'package:servigo/core/theme/app_spacing.dart';
+import 'package:servigo/core/theme/theme_mode_provider.dart';
 
-/// Halaman sementara untuk melihat hasil tema.
+/// Halaman sementara untuk melihat hasil tema dan mencoba Riverpod.
 /// Akan dihapus setelah kita selesai belajar tema (sebelum fitur nyata).
-class ThemePreviewScreen extends StatelessWidget {
+class ThemePreviewScreen extends ConsumerWidget {
   const ThemePreviewScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+
+    // watch: widget ini rebuild setiap themeMode berubah.
+    final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Theme Preview')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
+          const _SectionTitle('Mode Tema'),
+          SegmentedButton<ThemeMode>(
+            showSelectedIcon: false,
+            segments: const <ButtonSegment<ThemeMode>>[
+              ButtonSegment(
+                value: ThemeMode.system,
+                label: Text('Sistem'),
+                icon: Icon(Icons.brightness_auto_rounded),
+              ),
+              ButtonSegment(
+                value: ThemeMode.light,
+                label: Text('Terang'),
+                icon: Icon(Icons.light_mode_rounded),
+              ),
+              ButtonSegment(
+                value: ThemeMode.dark,
+                label: Text('Gelap'),
+                icon: Icon(Icons.dark_mode_rounded),
+              ),
+            ],
+            selected: {themeMode},
+            // read: di dalam callback kita hanya ingin MEMANGGIL aksi,
+            // bukan mendengarkan perubahan.
+            onSelectionChanged: (selection) {
+              ref.read(themeModeProvider.notifier).setMode(selection.first);
+            },
+          ),
+          const SizedBox(height: AppSpacing.lg),
           const _SectionTitle('Typography'),
           Text('Display Small', style: textTheme.displaySmall),
           Text('Headline Medium', style: textTheme.headlineMedium),
@@ -124,7 +157,8 @@ class _Swatch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Pilih warna teks yang kontras terhadap warna latar swatch.
-    final isDark = ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
+    final isDark =
+        ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
     final foreground = isDark ? Colors.white : Colors.black;
 
     return Container(

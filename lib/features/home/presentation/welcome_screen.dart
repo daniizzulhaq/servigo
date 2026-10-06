@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:servigo/core/constants/app_constants.dart';
+import 'package:servigo/core/router/app_routes.dart';
 import 'package:servigo/core/theme/app_spacing.dart';
-import 'package:servigo/features/home/presentation/theme_preview_screen.dart';
 import 'package:servigo/shared/widgets/app_logo.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Theme berhasil diterapkan! 🎉'),
+                        content: Text('Routing berhasil dipasang! 🎉'),
                       ),
                     );
                   },
@@ -49,16 +50,18 @@ class WelcomeScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {
-                    // Navigasi sementara. Diganti GoRouter di Tahap 4.
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const ThemePreviewScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: () => context.pushNamed(AppRoutes.themePreview),
                   child: const Text('Lihat Theme Preview'),
                 ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextButton(
+                onPressed: () => context.pushNamed(
+                  AppRoutes.serviceDetail,
+                  pathParameters: {'id': '12'},
+                  queryParameters: {'from': 'welcome'},
+                ),
+                child: const Text('Contoh Detail Layanan'),
               ),
             ],
           ),
