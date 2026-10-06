@@ -39,7 +39,7 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Routing berhasil dipasang! 🎉'),
+                        content: Text('Fondasi project siap! 🎉'),
                       ),
                     );
                   },
@@ -55,13 +55,22 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              TextButton(
-                onPressed: () => context.pushNamed(
-                  AppRoutes.serviceDetail,
-                  pathParameters: {'id': '12'},
-                  queryParameters: {'from': 'welcome'},
-                ),
-                child: const Text('Contoh Detail Layanan'),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () => context.pushNamed(
+                      AppRoutes.serviceDetail,
+                      pathParameters: {'id': '12'},
+                      queryParameters: {'from': 'welcome'},
+                    ),
+                    child: const Text('Contoh Detail Layanan'),
+                  ),
+                  TextButton(
+                    onPressed: () => context.pushNamed(AppRoutes.apiCheck),
+                    child: const Text('Cek Koneksi API'),
+                  ),
+                ],
               ),
             ],
           ),

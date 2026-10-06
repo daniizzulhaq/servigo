@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:servigo/core/router/app_routes.dart';
+import 'package:servigo/features/api_check/presentation/api_check_screen.dart';
 import 'package:servigo/features/home/presentation/theme_preview_screen.dart';
 import 'package:servigo/features/home/presentation/welcome_screen.dart';
 import 'package:servigo/features/services/presentation/service_detail_placeholder_screen.dart';
@@ -15,12 +16,8 @@ final initialLocationProvider = Provider<String>(
 );
 
 /// Router aplikasi, disediakan lewat Riverpod.
-///
-/// Dibuat satu kali dan hidup selama ProviderScope hidup.
-/// Di Tahap 29+ router ini akan membaca status login untuk redirect.
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    // read (bukan watch): lokasi awal hanya dipakai sekali saat dibuat.
     initialLocation: ref.read(initialLocationProvider),
     debugLogDiagnostics: kDebugMode,
     errorBuilder: (context, state) =>
@@ -35,6 +32,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.themePreviewPath,
         name: AppRoutes.themePreview,
         builder: (context, state) => const ThemePreviewScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.apiCheckPath,
+        name: AppRoutes.apiCheck,
+        builder: (context, state) => const ApiCheckScreen(),
       ),
       GoRoute(
         path: AppRoutes.serviceDetailPath,
@@ -52,7 +54,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 
-  // Saat provider dibuang (misalnya app/test selesai), lepaskan router.
   ref.onDispose(router.dispose);
 
   return router;
