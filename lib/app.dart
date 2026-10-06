@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servigo/core/constants/app_constants.dart';
+import 'package:servigo/core/theme/app_theme.dart';
 import 'package:servigo/features/home/presentation/welcome_screen.dart';
 
 class ServiGoApp extends StatelessWidget {
@@ -10,10 +11,9 @@ class ServiGoApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1E88E5)),
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       home: const WelcomeScreen(),
     );
   }

@@ -13,4 +13,14 @@ void main() {
     expect(find.text(AppConstants.tagline), findsOneWidget);
     expect(find.text('Mulai'), findsOneWidget);
   });
+
+  testWidgets('Tombol Theme Preview membuka halaman preview', (tester) async {
+    await tester.pumpWidget(const ServiGoApp());
+
+    await tester.tap(find.text('Lihat Theme Preview'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Theme Preview'), findsOneWidget);
+    expect(find.text('Typography'), findsOneWidget);
+  });
 }
